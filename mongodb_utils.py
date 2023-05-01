@@ -10,7 +10,8 @@ faculty_columns = {"name":1, "position":1, "researchInterest":1, "email":1, "pho
 
 def get_professor_by_name(name):
     name = {"name" : "{}".format(name)}
-    return list(faculty_collection.find(name, faculty_columns))
+    result = faculty_collection.find(name, faculty_columns)
+    return list(result) if result else {}
 
 def get_all_professors():
     return list(faculty_collection.find({}))

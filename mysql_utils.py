@@ -10,14 +10,35 @@ db = mysql.connector.connect(
 
 cursor = db.cursor()
 
+# faculty = { 1, 'Syed Hassan', 'SE', 'ASD'...}
 def add_faculty(faculty):
-    query = """
-    INSERT INTO faculty_all_attributes
-    (id, name, position, researchInterest, email, phone, photoUrl, keywords, publications, `affiliation.id`, `affiliation.name`, `affiliation.photoUrl`)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    field_names = [
+        "name", "position", "researchInterest", "email", "phone",
+        "photoUrl", "keywords", "publications", "`affiliation.id`",
+        "`affiliation.name`", "`affiliation.photoUrl`"
+    ]
+
+    query_fields = []
+    query_values = []
+    query_placeholders = []
+
+    for field, value in zip(field_names, faculty):
+        if value is not None:
+            query_fields.append(field)
+            query_values.append(value)
+            query_placeholders.append("%s")
+
+    if not query_fields:
+        print("No values provided to add faculty member.")
+        return
+
+    query = f"""
+    INSERT INTO faculty_all_attributes ({', '.join(query_fields)})
+    VALUES ({', '.join(query_placeholders)})
     """
+
     try:
-        cursor.execute(query, faculty)
+        cursor.execute(query, tuple(query_values))
         db.commit()
         print(f"Faculty member added successfully.")
     except Error as e:
