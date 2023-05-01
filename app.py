@@ -15,7 +15,6 @@ professor_names = [prof["name"] for prof in professors]
 
 app.layout = html.Div([
     html.Div([
-        # First widget - Search faculty
         html.Div([
             html.H3("Select a faculty member:", style={"margin-bottom": "20px"}),
             dcc.Dropdown(
@@ -26,8 +25,6 @@ app.layout = html.Div([
             ),
             html.Div(id='output-container-1', children=[], style={"margin-top": "20px"})
         ], style={"width": "33%", "display": "inline-block", "padding": "20px", "border": "1px solid #ccc", "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", "border-radius": "10px"}),
-
-        # Second widget - delete
         html.Div([
                 html.H3("Select a faculty member to delete:", style={"margin-bottom": "20px"}),
                 dcc.Dropdown(
@@ -39,8 +36,6 @@ app.layout = html.Div([
                 html.Button('Delete', id='delete-faculty-button', n_clicks=0),
                 html.Div(id='output-container')
             ], style={"width": "33%", "display": "inline-block", "padding": "20px", "border": "1px solid #ccc", "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", "border-radius": "10px"}),
-
-        # Third widget - Add faculty
         html.Div([
             html.H3("Add New Faculty"),
             html.Label('Name:'),
@@ -60,8 +55,6 @@ app.layout = html.Div([
         ], style={"width": "33%", "display": "inline-block", "padding": "20px", "border": "1px solid #ccc", "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", "border-radius": "10px"}) 
 
     ], style={"display": "flex", "justify-content": "center"}),
-
-    # Fourth widget - Sample graph
     html.Div([
         html.H3("Faculty Data Graph"),
         dcc.Graph(
@@ -137,26 +130,3 @@ def update_output(n_clicks, name, position, research, email, phone, university):
 
 if __name__ == '__main__':
     app.run_server(debug=True)
-
-#print(get_professor_by_name('Li,Qun'))
-#print(get_top_3_professors_by_citations())
-#print(get_top_3_most_cited_publications())
-#print(get_all_professors())
-#print(get_num_cited_publications_by_year())
-
-#get_top_10_keywords_by_university('University of illinois at Urbana Champaign')
-# add_faculty((   
-#     92,                  # id: Unique identifier for the faculty member
-#     'John Doe',                 # name: Full name of the faculty member
-#     'Assistant Professor',      # position: Academic position, such as Assistant Professor, Associate Professor, or Professor
-#     'Artificial Intelligence',  # researchInterest: Primary research interest, such as Machine Learning, Computer Vision, or Robotics
-#     'john.doe@example.com',     # email: Email address of the faculty member
-#     '123-456-7890',             # phone: Phone number of the faculty member
-#     'https://example.com/photo_url',  # photoUrl: URL to the faculty member's photo
-#     'Machine Learning, Deep Learning',  # keywords: Research keywords associated with the faculty member, separated by commas
-#     json.dumps(['Paper 1, Paper 2']),         # publications: List of publications by the faculty member, separated by commas
-#     '1',                        # affiliation: Affiliation ID or unique identifier for the affiliated institute
-#     'Example University',       # affiliation_name: Name of the affiliated institute or university
-#     'https://example.com/affiliation_photo_url'  # affiliation_photoUrl: URL to the affiliated institute's photo or logo
-# ))
-#remove_faculty('John Doe')
