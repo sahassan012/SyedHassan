@@ -22,17 +22,9 @@ app.layout = html.Div([
                 id="faculty-dropdown",
                 options=[{"label": name, "value": name} for name in professor_names],
                 value='',
-                style={"width": "100%"}
+                style={"width": "50%"}
             ),
-            html.Div(id='output-container', children=[
-                html.P(id='professor-name'),
-                html.P(id='professor-position'),
-                html.P(id='professor-interest'),
-                html.P(id='professor-email'),
-                html.P(id='professor-phone'),
-                html.P(id='professor-affiliation'),
-                html.Img(id='professor-photo', src='', width=200)
-            ], style={"margin-top": "20px"})
+            html.Div(id='output-container-1', children=[], style={"margin-top": "20px"})
         ], style={"width": "33%", "display": "inline-block", "padding": "20px", "border": "1px solid #ccc", "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", "border-radius": "10px"}),
 
         # Second widget - delete
@@ -45,7 +37,7 @@ app.layout = html.Div([
                     style={"width": "100%"}
                 ),
                 html.Button('Delete', id='delete-faculty-button', n_clicks=0),
-                html.Div(id='output-container-2')
+                html.Div(id='output-container')
             ], style={"width": "33%", "display": "inline-block", "padding": "20px", "border": "1px solid #ccc", "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)", "border-radius": "10px"}),
 
         # Third widget - Add faculty
@@ -88,28 +80,27 @@ app.layout = html.Div([
 ])
 
 @app.callback(
-    [Output(component_id="professor-name", component_property="children"),
-    Output(component_id="professor-position", component_property="children"),
-    Output(component_id="professor-interest", component_property="children"),
-    Output(component_id="professor-email", component_property="children"),
-    Output(component_id="professor-phone", component_property="children"),
-    Output(component_id="professor-affiliation", component_property="children"),
-    Output(component_id="professor-photo", component_property="src")],
+    Output(component_id="output-container-1", component_property="children"),
     Input("faculty-dropdown", "value")
 )
 def update_faculty_details(selected_name):
     if selected_name is None or selected_name == '':
-        return dash.no_update
+        return []
+    
     selected_faculty = get_professor_by_name(selected_name)[0]
+
     if not selected_faculty:
-        return html.P("No faculty member found.")
-    return f"Name: {selected_faculty['name']}", \
-           f"Position: {selected_faculty['position']}", \
-           f"Research Interest: {selected_faculty['researchInterest']}", \
-           f"Email: {selected_faculty['email']}", \
-           f"Phone: {selected_faculty['phone']}", \
-           f"University: {selected_faculty['affiliation']['name']}", \
-           selected_faculty['photoUrl']
+        return [html.P("No faculty member found.")]
+    
+    return [
+        html.P(f"Name: {selected_faculty['name']}"),
+        html.P(f"Position: {selected_faculty['position']}"),
+        html.P(f"Research Interest: {selected_faculty['researchInterest']}"),
+        html.P(f"Email: {selected_faculty['email']}"),
+        html.P(f"Phone: {selected_faculty['phone']}"),
+        html.P(f"University: {selected_faculty['affiliation']['name']}"),
+        html.Img(src=selected_faculty['photoUrl'], width=200)
+    ]
 
 @app.callback(
     Output('output-container', 'children'),
